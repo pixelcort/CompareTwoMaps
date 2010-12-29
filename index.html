@@ -1,0 +1,35 @@
+<!DOCTYPE html><!-- HTML5 -->
+<html>
+  <head>
+    <title>CompareTwoMaps</title>
+    <script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false'></script>
+    <script>
+    /*globals google*/
+      function onloadFunction(){
+        var latlng = new google.maps.LatLng(-34.397, 150.644);
+        var options = {
+          zoom: 8,
+          center: latlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var left_map = new google.maps.Map(document.getElementById('left_map'), options);
+        var right_map = new google.maps.Map(document.getElementById('right_map'), options);
+        
+        google.maps.event.addListener(left_map, 'zoom_changed', function() {
+          if (left_map.getZoom() !== right_map.getZoom()) {
+            right_map.setZoom(left_map.getZoom());
+          }
+        });
+        google.maps.event.addListener(right_map, 'zoom_changed', function() {
+          if (left_map.getZoom() !== right_map.getZoom()) {
+            left_map.setZoom(right_map.getZoom());
+          }
+        });
+      }
+    </script>
+  </head>
+  <body onload='onloadFunction();' style='margin:0px; padding:0px;'>
+    <div id='left_map' style='position: absolute; width: 50%; height: 100%; left: 0px;'></div>
+    <div id='right_map' style='position: absolute; width: 50%; height: 100%; right: 0px;'></div>
+  </body>
+</html>
